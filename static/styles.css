@@ -1,0 +1,33 @@
+:root {
+    --text-color: #212529;
+    --text-highlight-color: #414952;
+}
+
+.prm-navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+    justify-content: space-around;
+}
+
+.prm-brand {
+    font-size: 2rem
+}
+
+.prm-navlinks {
+    display: flex;
+    gap: 1rem;
+}
+
+.prm-navlinks > a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+}
+
+.prm-navlinks > a:hover {
+    color: var(--text-highlight-color);
+}
