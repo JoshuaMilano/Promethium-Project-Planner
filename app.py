@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # Grab secret_key from the .env file
-app.secret_key = os.getenv("FLAST_SECRET_KEY")
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 # Creating the login_required decorator
 def login_required(f):
