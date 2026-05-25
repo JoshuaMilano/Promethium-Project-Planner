@@ -1,4 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
-    <h1>Hello, World!</h1>
+    <main class="container py-5 text-center">
+        <div class="prm-boards-container">
+            <div class="prm-boards-list">
+                <!-- Jinja to update/generate the users current list of boards -->
+                <button>Create new board</button>
+            </div>
+            <div class="prm-board"></div>
+        </div>
+    </main>
 {% endblock %}
