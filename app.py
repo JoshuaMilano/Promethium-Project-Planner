@@ -2,7 +2,7 @@
 import os
 import sqlite3
 from dotenv import load_dotenv
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from helpers import login_required, fetch_db
@@ -126,6 +126,12 @@ def login():
 def logout():
     session.clear()
     return redirect('/')
+
+# Create Board
+@app.route('/api/create_board')
+def create_board():
+
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

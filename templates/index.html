@@ -4,9 +4,14 @@
         <div class="prm-boards-container">
             <div class="prm-boards-list">
                 <!-- Jinja to update/generate the users current list of boards -->
-                <button>Create new board</button>
+                <button id="create-board-btn">Create new board</button>
             </div>
             <div class="prm-board"></div>
         </div>
     </main>
+    <script>
+        document.getElementById("create-board-btn").addEventListener("click", function() {
+            fetch()
+        })
+    </script>
 {% endblock %}
