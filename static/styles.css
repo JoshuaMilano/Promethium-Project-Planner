@@ -3,6 +3,10 @@
     --text-highlight-color: #414952;
 }
 
+* {
+    text-decoration: none !important;
+}
+
 .prm-navbar {
     display: flex;
     flex-direction: row;
@@ -12,8 +16,9 @@
     justify-content: space-around;
 }
 
-.prm-brand {
-    font-size: 2rem
+.prm-brand > a {
+    font-size: 2rem;
+    color: var(--text-color) !important;
 }
 
 .prm-navlinks {
@@ -37,11 +42,26 @@
     grid-template-columns: 7.5rem auto;
 }
 
-.prm-boards-list > button {
+.prm-boards-list {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.prm-boards-list > a, .create-board-btn {
     display: block;
     padding: .25rem;
+    background-color: #E9E9ED;
     border: none;
+    border-radius: .25rem;
 }
+
+.prm-boards-list > a:hover, .create-board-btn:hover {
+    background-color: #d0d0d7;
+}
+
+/* Board Styles */
+/* Board Header */
 
 
 /* TEMPORARY STYLES */

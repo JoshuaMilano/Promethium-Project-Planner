@@ -25,7 +25,10 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 @app.route('/')
 @login_required
 def index():
-    return render_template('index.html')
+    db = fetch_db()
+    boards = db.execute('SELECT id, title FROM boards WHERE user_id = ?', (session.get('user_id'),)).fetchall()
+    db.close()
+    return render_template('index.html', users_boards=boards)
 
 
 # register page
@@ -128,11 +131,52 @@ def logout():
     return redirect('/')
 
 # Create Board
-@app.route('/api/create_board')
+@app.route('/create_board', methods=['POST'])
+@login_required
 def create_board():
+    if request.method == 'POST':
+        # Get user id, and set default board values
+        user_id = session.get('user_id')
+        default_title = 'Untitled Board'
+        default_background = '#FFFFFF'
 
+        # Open DB and create the board
+        db = fetch_db()
+        cursor = db.cursor()
+        cursor.execute('INSERT INTO boards (user_id, title, background) VALUES (?, ?, ?)', (user_id, default_title, default_background))
+        db.commit()
+
+        # Store board id in a variable, and close the connection
+        new_board_id = cursor.lastrowid
+        db.close()
+        return redirect(f'board/{new_board_id}')
     return render_template('index.html')
 
+# View Board
+@app.route('/board/<int:board_id>')
+@login_required
+def view_board(board_id):
+    # Open database connection
+    db = fetch_db()
+
+    # Check user owns board
+    active_board = db.execute('SELECT * FROM boards WHERE id = ? AND user_id = ?', (board_id, session.get('user_id'))).fetchone()
+    if active_board is None:
+        db.close()
+        return redirect('/')
+    
+    # Grab lists for board
+    lists = db.execute('SELECT * FROM lists WHERE board_id = ? ORDER BY position', (board_id,)).fetchall()
+
+    # Grab all the cards for board
+    cards = db.execute('SELECT cards.* FROM cards JOIN lists ON cards.column_id = lists.id WHERE lists.board_id = ? ORDER BY cards.position', (board_id,)).fetchall()
+
+    # Grab users other boards
+    users_boards = db.execute('SELECT id, title FROM boards WHERE user_id = ?', (session.get('user_id'),)).fetchall()
+
+    # Close database connection
+    db.close()
+    return render_template('board.html', users_boards=users_boards, active_board=active_board, board_lists=lists, all_cards=cards)
 
 if __name__ == '__main__':
     app.run(debug=True)
