@@ -2,10 +2,10 @@
 import os
 import sqlite3
 from dotenv import load_dotenv
-from flask import Flask, render_template, session, request, redirect, url_for, jsonify
-from functools import wraps
+from flask import Flask, render_template, session, request, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from helpers import login_required, fetch_db
+from api import api_bp
 
 
 # Load the .env file
@@ -19,6 +19,8 @@ app = Flask(__name__)
 # Grab secret_key from the .env file
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
+# Pull the API routes
+app.register_blueprint(api_bp, url_prefix='/api')
 
 # Routes
 # index page
@@ -166,7 +168,8 @@ def view_board(board_id):
         return redirect('/')
     
     # Grab lists for board
-    lists = db.execute('SELECT * FROM lists WHERE board_id = ? ORDER BY position', (board_id,)).fetchall()
+    # lists = db.execute('SELECT * FROM lists WHERE board_id = ? ORDER BY position', (board_id,)).fetchall() # ORDERED
+    lists = db.execute('SELECT * FROM lists WHERE board_id = ?', (board_id,)).fetchall() # UNORDERED
 
     # Grab all the cards for board
     cards = db.execute('SELECT cards.* FROM cards JOIN lists ON cards.column_id = lists.id WHERE lists.board_id = ? ORDER BY cards.position', (board_id,)).fetchall()
@@ -176,7 +179,7 @@ def view_board(board_id):
 
     # Close database connection
     db.close()
-    return render_template('board.html', users_boards=users_boards, active_board=active_board, board_lists=lists, all_cards=cards)
+    return render_template('board.html', users_boards=users_boards, active_board=active_board, board_lists=lists, board_cards=cards)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,14 +4,13 @@
         <div class="prm-boards-container">
             <div class="prm-boards-list">
                 {% for board in users_boards %}
-                    <a href="/board/{{ board.id }}">{{ board.title }}</a>
+                    <a class="prm-button" href="/board/{{ board.id }}">{{ board.title }}</a>
                 {% endfor %}
                 <form action="/create_board" method="post">
-                    <button class="create-board-btn" type="submit">Create new board</button>
+                    <button class="prm-button" type="submit">Create new board</button>
                 </form>
             </div>
             <div class="prm-board"></div>
         </div>
     </main>
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 {% endblock %}
