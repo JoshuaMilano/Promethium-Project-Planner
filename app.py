@@ -172,7 +172,7 @@ def view_board(board_id):
     lists = db.execute('SELECT * FROM lists WHERE board_id = ?', (board_id,)).fetchall() # UNORDERED
 
     # Grab all the cards for board
-    cards = db.execute('SELECT cards.* FROM cards JOIN lists ON cards.column_id = lists.id WHERE lists.board_id = ? ORDER BY cards.position', (board_id,)).fetchall()
+    cards = db.execute('SELECT cards.* FROM cards JOIN lists ON cards.lists_id = lists.id WHERE lists.board_id = ? ORDER BY cards.position', (board_id,)).fetchall()
 
     # Grab users other boards
     users_boards = db.execute('SELECT id, title FROM boards WHERE user_id = ?', (session.get('user_id'),)).fetchall()

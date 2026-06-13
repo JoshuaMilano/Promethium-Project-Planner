@@ -17,6 +17,9 @@ def fetch_db():
     # Fetch Database
     db = sqlite3.connect('promethium.db')
 
+    # Turn on Foreign Key constraints
+    db.execute('PRAGMA foreign_keys = ON')
+
     # return data as dictionaries
     db.row_factory = sqlite3.Row
     return db

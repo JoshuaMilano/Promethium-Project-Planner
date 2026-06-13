@@ -3,14 +3,6 @@
     --text-highlight-color: #414952;
 }
 
-#DEBUG_CONTENT {
-    display: block;
-    position: absolute;
-    top: 0;
-    color: red;
-    font-weight: bold;
-}
-
 * {
     text-decoration: none !important;
 }
@@ -73,11 +65,6 @@
     border: 1px solid black;
 }
 
-.prm-boards-list {
-    padding-right: .5rem;
-    border-right: 1px solid black; 
-}
-
 #ActiveBoardTab, #ActiveBoardTab > * {
     background-color: dodgerblue;
     color: white;
@@ -117,15 +104,49 @@
     word-break: break-all;
 }
 
-/* .delete-board-button {
+.prm-card > p {
+    margin: 0;
+}
+
+.prm-boards-list {
+    padding-right: .5rem;
+    border-right: 1px solid black; 
+}
+
+.board-list-item {
+    position: relative;
+}
+
+.prm-board-link {
+    position: relative;
+    z-index: 99;
+}
+
+#delete-board-button {
     display: flex;
     align-content: center;
     justify-content: center;
-    position: relative;
-    top: 5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
     border: none;
     border-radius: 100rem;
     aspect-ratio: 1/1;
     background-color: #ef2f45;
     color: white;
-} */
+
+    animation: slideOut 0.5s ease-out forwards
+}
+
+/* ANIMATIONS */
+
+@keyframes slideOut {
+    20% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-3rem);
+    }
+}

@@ -4,9 +4,9 @@
         <div class="prm-boards-container">
             <div class="prm-boards-list">
                 {% for board in users_boards %}
-                <div>
-                    <a class="prm-button boardLinks" {% if board.id == active_board.id %} id="ActiveBoardTab" {% endif %} spellcheck="false" href="/board/{{ board.id }}">{{ board.title }}</a>
-                    <!-- {% if board.id == active_board.id %} <button class="delete-board-button"><i data-lucide="x"></i></button> {% endif %} -->
+                <div class="board-list-item">
+                    <a class="prm-button prm-board-link" {% if board.id == active_board.id %} id="ActiveBoardTab" {% endif %} spellcheck="false" href="/board/{{ board.id }}">{{ board.title }}</a>
+                    {% if board.id == active_board.id %} <button id="delete-board-button"><i data-lucide="x"></i></button> {% endif %}
                 </div>
                 {% endfor %}
                 <form action="/create_board" method="post">
@@ -27,7 +27,7 @@
                         <h2 class="prm-list-title" spellcheck="false" contenteditable="true">{{ list.title }}</h2>
                         <div class="prm-card-container">
                             {% for card in board_cards %}
-                            {% if card.column_id == list.id %}
+                            {% if card.lists_id == list.id %}
                             <div class="prm-card" data-card-id="{{ card.id }}">
                                 <p class="prm-card-content" spellcheck = "false" contenteditable="true">{{ card.content }}</p>
                             </div>

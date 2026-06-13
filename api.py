@@ -7,8 +7,10 @@ api_bp = Blueprint('api', __name__)
 allowed_updates = {
     'boards': ['title', 'background'],
     'lists': ['title', 'position'],
-    'cards': ['title', 'content', 'position']
+    'cards': ['content', 'position']
 }
+
+# TODO: Add API route for creating a board
 
 @api_bp.route('/add_list', methods=['POST'])
 @login_required
@@ -74,7 +76,7 @@ def api_create_card():
     
     # Adding the card
     cursor = db.cursor()
-    cursor.execute('INSERT INTO cards (column_id, position, background, content) VALUES (?, ?, ?, ?)', (column_id, 99, '#FFFFFF', 'New Card!'))
+    cursor.execute('INSERT INTO cards (lists_id, position, background, content) VALUES (?, ?, ?, ?)', (column_id, 99, '#FFFFFF', 'New Card!'))
 
     # Grabbing the card id
     new_card_id = cursor.lastrowid
@@ -83,6 +85,37 @@ def api_create_card():
     db.commit()
     db.close()
     return jsonify({'success': True, 'new_id': new_card_id})
+
+@api_bp.route('/delete_item', methods=['POST'])
+@login_required
+def api_delete_item():
+    data = request.get_json()
+    item_id = data.get('item_id')
+    table_name = data.get('table_name')
+    
+    user_id = session.get('user_id')
+
+    if table_name not in allowed_updates:
+        return jsonify({'success': False, 'error': 'Invalid table'}), 400
+    
+    db = fetch_db()
+
+    # Check Ownership
+    if table_name == 'boards':
+        user_owns = db.execute('SELECT id FROM boards WHERE id = ? AND user_id = ?', (item_id, user_id)).fetchone()
+    
+    if not user_owns:
+        db.close()
+        return jsonify({'success': False, 'error': 'Access denied'}), 403
+
+    if table_name == 'boards':
+        db.execute(f'DELETE FROM {table_name} WHERE id = ?', (item_id,))
+    
+    db.commit()
+    db.close()
+
+    return jsonify({'success': True})
+
 
 @api_bp.route('/update_board', methods=['POST'])
 @login_required
@@ -113,6 +146,9 @@ def api_update_board():
         db.close()
         return jsonify({'success': False, 'error': 'Access denied'}), 403
     
+    # TODO: If element_name = lists, verify user owns list
+    # TODO: If element_name = cards, verify user owns cards
+
     # Building the query
     query = f'UPDATE {element_name} SET {field_to_update} = ? WHERE id = ?'
 
@@ -122,5 +158,3 @@ def api_update_board():
     db.close()
 
     return jsonify({'success': True})
-
-# TODO: Add checks to check user owns lists and cards
