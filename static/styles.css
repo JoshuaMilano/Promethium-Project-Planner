@@ -86,6 +86,10 @@
     border: black solid 1px;
 }
 
+.prm-add-list-btn {
+    min-width: 15rem;
+}
+
 .prm-board {
     display: flex;
     flex-direction: column;
