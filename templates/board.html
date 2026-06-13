@@ -23,11 +23,13 @@
                     {% for list in board_lists %}
                     <div class="prm-list" data-list-id="{{ list.id }}">
                         <h2 class="prm-list-title" spellcheck="false" contenteditable="true">{{ list.title }}</h2>
+                        <button class="prm-delete-list-button"><i data-lucide="x"></i></button>
                         <div class="prm-card-container">
                             {% for card in board_cards %}
                             {% if card.lists_id == list.id %}
                             <div class="prm-card" data-card-id="{{ card.id }}">
                                 <p class="prm-card-content" spellcheck = "false" contenteditable="true">{{ card.content }}</p>
+                                <button class="prm-delete-card-button"><i data-lucide="x"></i></button>
                             </div>
                             {% endif %}
                             {% endfor %}

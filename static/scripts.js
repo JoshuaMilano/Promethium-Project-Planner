@@ -22,14 +22,31 @@ if (boardTitle) {
 }
 // List
 if (addListBtn) addListBtn.addEventListener('click', createList);
-// Cards
-if (listContainer) listContainer.addEventListener('click', createCard);
 // List and Cards
 if (listContainer) {
+    listContainer.addEventListener('click', handleListContainerButtons);
     listContainer.addEventListener('keydown', boardEnterSupport);
     listContainer.addEventListener('focusout', handleBoardEdits);
 }
 // Functions for board
+
+function handleListContainerButtons(event) {
+    // Handle Create Card Buttons
+    if (event.target.closest('.add-card-button')) {
+        createCard(event);
+    }
+
+    // Handle Delete List Buttons
+    if (event.target.closest('.prm-delete-list-button')) {
+        deleteList(event);
+    }
+
+    // Handle Delete Card Buttons
+    if (event.target.closest('.prm-delete-card-button')) {
+        deleteCard(event);
+    }
+}
+
 
 function createBoard() {
     fetch('/api/create_board', {
@@ -66,49 +83,51 @@ function createList() {
             const newListHTML = `
                 <div class="prm-list" data-list-id="${newListId}">
                     <h2 class="prm-list-title" spellcheck="false" contenteditable="true">New List</h2>
+                    <button class="prm-delete-list-button"><i data-lucide="x"></i></button>
                     <div class="prm-card-container">
                         <button class="prm-button add-card-button">Add Card</button>
                     </div>
                 </div>
             `;
             addListBtn.insertAdjacentHTML('beforebegin', newListHTML);
+            lucide.createIcons();
         } else {
-            console.error("Failed to create list");
+            console.error('Failed to create list');
         }
     });
 }
 
 function createCard(event) {
-    if (event.target.classList.contains('add-card-button')) {
-        const listElement = event.target.closest('.prm-list');
-        const listId = listElement.getAttribute('data-list-id');
-        
-        fetch('/api/add_card', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                board_id: idOfBoard,
-                column_id: listId
-            })
+    const listElement = event.target.closest('.prm-list');
+    const listId = listElement.getAttribute('data-list-id');
+    
+    fetch('/api/add_card', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            board_id: idOfBoard,
+            column_id: listId
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const newCardId = data.new_id;
-                
-                const newCardHTML = `
-                <div class="prm-card" data-card-id="${newCardId}">
-                <p class="prm-card-content" spellcheck = "false" contenteditable="true">New Card!</p>
-                </div>
-                `
-                event.target.insertAdjacentHTML('beforebegin', newCardHTML);
-            } else {
-                console.error("Card not added");
-            }
-        });
-    }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const newCardId = data.new_id;
+            
+            const newCardHTML = `
+            <div class="prm-card" data-card-id="${newCardId}">
+            <p class="prm-card-content" spellcheck = "false" contenteditable="true">New Card!</p>
+            <button class="prm-delete-card-button"><i data-lucide="x"></i></button>
+            </div>
+            `
+            event.target.insertAdjacentHTML('beforebegin', newCardHTML);
+            lucide.createIcons();
+        } else {
+            console.error('Card not added');
+        }
+    });
 }
 
 function deleteBoard() {
@@ -132,9 +151,55 @@ function deleteBoard() {
     });
 }
 
-// Add delete list function
+function deleteList(event) {
+    // Grab the list
+    const listElement = event.target.closest('.prm-list');
 
-// Add delete card function
+    // Fetch the delete request
+    fetch('/api/delete_item', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            item_id: listElement.getAttribute('data-list-id'),
+            table_name: 'lists'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            listElement.remove();
+        } else {
+            console.error('Couldn\'t delete list');
+        }
+    });
+}
+
+function deleteCard(event) {
+    // Grab the list
+    const cardElement = event.target.closest('.prm-card');
+
+    // Fetch the delete request
+    fetch('/api/delete_item', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            item_id: cardElement.getAttribute('data-card-id'),
+            table_name: 'cards'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            cardElement.remove();
+        } else {
+            console.error('Couldn\'t delete card');
+        }
+    });
+}
 
 function updateTitle() {
     // Clean Title
@@ -159,7 +224,7 @@ function updateTitle() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log("Title Successfully Updated");
+            console.log('Title Successfully Updated');
         }
     });
 }
@@ -172,7 +237,7 @@ function handleBoardEdits(event) {
         let newContent = sanitizeTitle(event.target.innerText.trim(), 'Untitled List');
         event.target.innerText = newContent;
 
-        console.log("List title was clicked");
+        console.log('List title was clicked');
 
         fetch('/api/update_board', {
             method: 'POST',
@@ -190,9 +255,9 @@ function handleBoardEdits(event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log("Title successfully updated");
+                console.log('Title successfully updated');
             } else {
-                console.error("Yeah, it's broke :(");
+                console.error('Yeah, it\'s broke :(');
             }
         });
     }
@@ -203,7 +268,7 @@ function handleBoardEdits(event) {
         // let newContent = sanitizeTitle(event.target.innerText.trim(), 'Untitled List');
         // event.target.innerText = newContent;
 
-        console.log("card title was clicked");
+        console.log('card title was clicked');
 
         fetch('/api/update_board', {
             method: 'POST',
@@ -221,9 +286,9 @@ function handleBoardEdits(event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log("Title successfully updated");
+                console.log('Title successfully updated');
             } else {
-                console.error("Yeah, it's broke :(");
+                console.error('Yeah, it\'s broke :(');
             }
         });
     }
@@ -248,4 +313,3 @@ function boardEnterSupport(event) {
 }
 
 // TODO: Remove console.logs - They exists for debug purposes ONLY.
-// TODO: Clean the title of the cards

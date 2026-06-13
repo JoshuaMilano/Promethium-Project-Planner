@@ -121,12 +121,26 @@ def api_delete_item():
     if table_name == 'boards':
         user_owns = db.execute('SELECT id FROM boards WHERE id = ? AND user_id = ?', (item_id, user_id)).fetchone()
     
+    elif table_name == 'lists':
+        user_owns = db.execute('''
+        SELECT lists.id FROM lists
+        JOIN boards ON lists.board_id = boards.id
+        WHERE lists.id = ? AND boards.user_id = ?
+        ''', (item_id, user_id)).fetchone()
+
+    elif table_name == 'cards':
+        user_owns = db.execute('''
+        SELECT cards.id FROM cards
+        JOIN lists ON cards.lists_id = lists.id
+        JOIN boards ON lists.board_id = boards.id
+        WHERE cards.id = ? AND boards.user_id = ?
+        ''', (item_id, user_id)).fetchone()
+
     if not user_owns:
         db.close()
         return jsonify({'success': False, 'error': 'Access denied'}), 403
 
-    if table_name == 'boards':
-        db.execute(f'DELETE FROM {table_name} WHERE id = ?', (item_id,))
+    db.execute(f'DELETE FROM {table_name} WHERE id = ?', (item_id,))
     
     db.commit()
     db.close()
@@ -139,7 +153,7 @@ def api_delete_item():
 def api_update_board():
     data = request.get_json()
 
-    element_name = data.get('element') # name of element # NOTE: update this variable to table.
+    table_name = data.get('element') # name of element
     item_id = data.get('item_id') # ID of item being changed
     field_to_update = data.get('field') # Field to update
     new_value = data.get('value') # New value from the browser
@@ -148,26 +162,39 @@ def api_update_board():
     user_id = session.get('user_id')
 
     # Does the element exist in the list
-    if element_name not in allowed_updates:
+    if table_name not in allowed_updates:
         return jsonify({'success': False, 'error': 'Invalid element'}), 400
     
-    if field_to_update not in allowed_updates[element_name]:
+    if field_to_update not in allowed_updates[table_name]:
         return jsonify({'success': False, 'error': 'Invalid field for this element'}), 400
     
     db = fetch_db()
 
-    # Does user have access?
-    user_owns_board = db.execute('SELECT id FROM boards WHERE id = ? AND user_id = ?', (board_id, user_id)).fetchone()
+    # Check Ownership
+    if table_name == 'boards':
+        user_owns = db.execute('SELECT id FROM boards WHERE id = ? AND user_id = ?', (item_id, user_id)).fetchone()
+    
+    elif table_name == 'lists':
+        user_owns = db.execute('''
+        SELECT lists.id FROM lists
+        JOIN boards ON lists.board_id = boards.id
+        WHERE lists.id = ? AND boards.user_id = ?
+        ''', (item_id, user_id)).fetchone()
 
-    if not user_owns_board:
+    elif table_name == 'cards':
+        user_owns = db.execute('''
+        SELECT cards.id FROM cards
+        JOIN lists ON cards.lists_id = lists.id
+        JOIN boards ON lists.board_id = boards.id
+        WHERE cards.id = ? AND boards.user_id = ?
+        ''', (item_id, user_id)).fetchone()
+
+    if not user_owns:
         db.close()
         return jsonify({'success': False, 'error': 'Access denied'}), 403
-    
-    # TODO: If element_name = lists, verify user owns list
-    # TODO: If element_name = cards, verify user owns cards
 
     # Building the query
-    query = f'UPDATE {element_name} SET {field_to_update} = ? WHERE id = ?'
+    query = f'UPDATE {table_name} SET {field_to_update} = ? WHERE id = ?'
 
     db.execute(query, (new_value, item_id))
 

@@ -84,6 +84,50 @@
     min-width: 15rem;
     padding: .5rem;
     border: black solid 1px;
+    position: relative;
+}
+
+.prm-delete-list-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: .5rem;
+    border: none;
+    background-color: #ef2f45;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.prm-delete-card-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: .25rem;
+    border: none;
+    background-color: #ef2f45;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 0;
+}
+
+.prm-list:hover .prm-delete-list-button {
+    animation: delete-list-fadeIn 0.3s ease-out forwards
+}
+
+.prm-card:hover .prm-delete-card-button {
+    animation: delete-card-slideOut 0.3s ease-out forwards
 }
 
 .prm-add-list-btn {
@@ -106,6 +150,8 @@
     padding: .5rem;
     border: black solid 1px;
     word-break: break-all;
+    position: relative;
+    z-index: 99;
 }
 
 .prm-card > p {
@@ -140,17 +186,42 @@
     background-color: #ef2f45;
     color: white;
 
-    animation: slideOut 0.5s ease-out forwards
+    animation: delete-board-slideOut 0.5s ease-out forwards
 }
 
 /* ANIMATIONS */
 
-@keyframes slideOut {
+@keyframes delete-board-slideOut {
     20% {
         transform: translateX(0);
     }
 
     100% {
         transform: translateX(-3rem);
+    }
+}
+
+@keyframes delete-list-fadeIn {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes delete-card-slideOut {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-1.25rem);
     }
 }
