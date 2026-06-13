@@ -9,9 +9,7 @@
                     {% if board.id == active_board.id %} <button id="delete-board-button"><i data-lucide="x"></i></button> {% endif %}
                 </div>
                 {% endfor %}
-                <form action="/create_board" method="post">
-                    <button class="prm-button" type="submit">Create new board</button>
-                </form>
+                <button class="prm-button" id="prm-create-board-button" type="submit">Create new board</button>
             </div>
             <!-- THIS IS THE CONTAINER FOR THE BOARD -->
             <div data-board-id="{{ active_board.id }}" class="prm-board">
@@ -37,7 +35,7 @@
                         </div>
                     </div>
                     {% endfor %}
-                    <button class="prm-button" id="add-list-btn">Add List</button>
+                    <button class="prm-button prm-add-list-btn" id="add-list-btn">Add List</button>
                     <!-- END OF LIST GENERATION -->
                 </div>
             </div>

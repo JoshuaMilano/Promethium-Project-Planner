@@ -10,7 +10,24 @@ allowed_updates = {
     'cards': ['content', 'position']
 }
 
-# TODO: Add API route for creating a board
+@api_bp.route('/create_board', methods=['POST'])
+@login_required
+def api_create_board():
+    # Get user id, and set default board values
+    user_id = session.get('user_id')
+    default_title = 'Untitled Board'
+    default_background = '#FFFFFF'
+
+    # Open database and create the board
+    db = fetch_db()
+    cursor = db.cursor()
+    cursor.execute('INSERT INTO boards (user_id, title, background) VALUES (?, ?, ?)', (user_id, default_title, default_background))
+    db.commit()
+
+    # Store board id a variable, and close the connection
+    new_board_id = cursor.lastrowid
+    db.close()
+    return jsonify({'success': True, 'new_board_id': new_board_id})
 
 @api_bp.route('/add_list', methods=['POST'])
 @login_required

@@ -3,6 +3,7 @@ lucide.createIcons();
 // Const variables
 const idOfBoard = window.location.pathname.split('/').pop();
 // Board
+const createBoardButton = document.getElementById('prm-create-board-button');
 const deleteBoardButton = document.getElementById('delete-board-button');
 const activeBoardTab = document.getElementById('ActiveBoardTab');
 const boardTitle = document.getElementById('prm-board-title');
@@ -12,6 +13,7 @@ const addListBtn = document.getElementById('add-list-btn');
 const listContainer = document.getElementById('prm-list-container');
 
 // Listeners
+if (createBoardButton) createBoardButton.addEventListener('click', createBoard);
 if (deleteBoardButton) deleteBoardButton.addEventListener('click', deleteBoard);
 // Board
 if (boardTitle) {
@@ -29,7 +31,22 @@ if (listContainer) {
 }
 // Functions for board
 
-// TODO: Add create board function
+function createBoard() {
+    fetch('/api/create_board', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = `/board/${data.new_board_id}`;
+        } else {
+            console.error('Failed to create board')
+        }
+    })
+}
 
 function createList() {
     fetch('/api/add_list', {

@@ -6,9 +6,7 @@
                 {% for board in users_boards %}
                     <a class="prm-button" href="/board/{{ board.id }}">{{ board.title }}</a>
                 {% endfor %}
-                <form action="/create_board" method="post">
-                    <button class="prm-button" type="submit">Create new board</button>
-                </form>
+                <button class="prm-button" id="prm-create-board-button" type="submit">Create new board</button>
             </div>
             <div class="prm-board"></div>
         </div>

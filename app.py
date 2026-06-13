@@ -132,28 +132,6 @@ def logout():
     session.clear()
     return redirect('/')
 
-# Create Board
-@app.route('/create_board', methods=['POST'])
-@login_required
-def create_board():
-    if request.method == 'POST':
-        # Get user id, and set default board values
-        user_id = session.get('user_id')
-        default_title = 'Untitled Board'
-        default_background = '#FFFFFF'
-
-        # Open DB and create the board
-        db = fetch_db()
-        cursor = db.cursor()
-        cursor.execute('INSERT INTO boards (user_id, title, background) VALUES (?, ?, ?)', (user_id, default_title, default_background))
-        db.commit()
-
-        # Store board id in a variable, and close the connection
-        new_board_id = cursor.lastrowid
-        db.close()
-        return redirect(f'board/{new_board_id}')
-    return render_template('index.html')
-
 # View Board
 @app.route('/board/<int:board_id>')
 @login_required
