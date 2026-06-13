@@ -9,7 +9,7 @@
                     {% if board.id == active_board.id %} <button id="delete-board-button"><i data-lucide="x"></i></button> {% endif %}
                 </div>
                 {% endfor %}
-                <button class="prm-button" id="prm-create-board-button" type="submit">Create new board</button>
+                <button class="prm-button" id="prm-create-board-button">Create new board</button>
             </div>
             <!-- THIS IS THE CONTAINER FOR THE BOARD -->
             <div data-board-id="{{ active_board.id }}" class="prm-board">
