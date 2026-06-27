@@ -2,10 +2,10 @@
 import os
 import sqlite3
 from dotenv import load_dotenv
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template, session, request, redirect, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from helpers import login_required, fetch_db
-from api import api_bp
+from api import api
 
 
 # Load the .env file
@@ -20,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 # Pull the API routes
-app.register_blueprint(api_bp, url_prefix='/api')
+app.register_blueprint(api, url_prefix='/api')
 
 # Routes
 # index page
@@ -49,11 +49,6 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         password_confirmation = request.form.get('password-confirmation')
-
-        # Check form info is valid
-        if not username or not password or password != password_confirmation:
-            # Eventually, I'll use flash here to let the user know what went wrong
-            return render_template('register.html')
         
         # Create the password hash
         hashed_password = generate_password_hash(password)
@@ -71,7 +66,7 @@ def register():
         except sqlite3.IntegrityError:
             # If username already exists
             db.close()
-            # Flash an error to the user
+            flash('Username is taken', 'error')
             return render_template('register.html')
         
         db.close()
@@ -93,11 +88,6 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Validate
-        if not username or not password:
-            # Flash an apology
-            render_template('login.html')
-
         # Grab database
         db = fetch_db()
 
@@ -115,7 +105,7 @@ def login():
 
         # Check user info is correct
         if user_info is None or not check_password_hash(user_info['hash'], password):
-            # Add Flash message (Might use an elif to check if the username was incorrect, or if the password was wrong.)
+            flash('Incorrect username or password', 'error')
             return render_template('login.html')
         
         # Log user in
@@ -163,8 +153,11 @@ def view_board(board_id):
 @app.route('/account')
 @login_required
 def account():
-    return redirect('/')
-    # return render_template('account.html')
+    return render_template('account.html')
+
+@app.route('/mobile')
+def mobile():
+    return render_template('mobile.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,7 +1,8 @@
-from flask import Blueprint, request, redirect, jsonify, session
+from flask import Blueprint, request, redirect, jsonify, session, flash
 from helpers import fetch_db, login_required
+from werkzeug.security import check_password_hash, generate_password_hash
 
-api_bp = Blueprint('api', __name__)
+api = Blueprint('api', __name__)
 
 # Dictionary to define what can be changed
 allowed_updates = {
@@ -10,7 +11,7 @@ allowed_updates = {
     'cards': ['content', 'position']
 }
 
-@api_bp.route('/create_board', methods=['POST'])
+@api.route('/create_board', methods=['POST'])
 @login_required
 def api_create_board():
     # Get user id, and set default board values
@@ -29,7 +30,7 @@ def api_create_board():
     db.close()
     return jsonify({'success': True, 'new_board_id': new_board_id})
 
-@api_bp.route('/add_list', methods=['POST'])
+@api.route('/add_list', methods=['POST'])
 @login_required
 def api_create_list():
 
@@ -62,7 +63,7 @@ def api_create_list():
     db.close()
     return jsonify({'success': True, 'new_id': new_list_id})
 
-@api_bp.route('/add_card', methods=['POST'])
+@api.route('/add_card', methods=['POST'])
 @login_required
 def api_create_card():
     
@@ -103,7 +104,7 @@ def api_create_card():
     db.close()
     return jsonify({'success': True, 'new_id': new_card_id})
 
-@api_bp.route('/delete_item', methods=['POST'])
+@api.route('/delete_item', methods=['POST'])
 @login_required
 def api_delete_item():
     data = request.get_json()
@@ -148,7 +149,7 @@ def api_delete_item():
     return jsonify({'success': True})
 
 
-@api_bp.route('/update_board', methods=['POST'])
+@api.route('/update_board', methods=['POST'])
 @login_required
 def api_update_board():
     data = request.get_json()
@@ -204,3 +205,115 @@ def api_update_board():
     return jsonify({'success': True})
 
 # Account changes
+# Change username
+@api.route('/change_username', methods=['POST'])
+@login_required
+def change_username():
+    # Grab the form info
+    old_username = request.form.get('old_username')
+    new_username = request.form.get('new_username')
+    password = request.form.get('password')
+
+    # Check form info was entered
+    if not old_username or not new_username or not password:
+        return redirect('/account')
+    
+    # Grab user id
+    user_id = session.get('user_id')
+    
+    # Grab DB
+    db = fetch_db()
+
+    # Grab user info
+    user = db.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
+
+    # compare usernames
+    if user['username'] != old_username:
+        flash('Old username is incorrect', 'error')
+        return redirect('/account')
+
+    # Compare user passwords
+    if not check_password_hash(user['hash'], password):
+        flash('Wrong password', 'error')
+        return redirect('/account')
+    
+    # Update username
+    db.execute('UPDATE users SET username = ? WHERE id = ?', (new_username, user_id))
+    db.commit()
+    db.close()
+
+    flash('Username updated', 'success')
+    return redirect('/account')
+
+# Change Password
+@api.route('/change_password', methods=['POST'])
+@login_required
+def change_password():
+    # Grab the form info
+    old_password = request.form.get('old_password')
+    new_password = request.form.get('new_password')
+
+    if not old_password or not new_password:
+        return redirect('/account')
+
+    # Grab user id
+    user_id = session.get('user_id')
+
+    # Grab DB
+    db = fetch_db()
+
+    # Grab user info
+    user = db.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
+
+    # Check user password
+    if not check_password_hash(user['hash'], old_password):
+        flash('Wrong password', 'error')
+        return redirect('/account')
+    
+    # Update user password
+    db.execute('UPDATE users SET hash = ? WHERE id = ?', (generate_password_hash(new_password), user_id))
+    db.commit()
+    db.close()
+
+    flash('Password updated', 'success')
+    return redirect('/account')
+
+
+
+# Delete Account
+@api.route('/delete_account', methods=['POST'])
+@login_required
+def delete_account():
+    # Get form info
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    # Check form
+    if not username or not password:
+        return redirect('/account')
+
+    # Get user id
+    user_id = session.get('user_id')
+
+    # Fetch DB
+    db = fetch_db()
+
+    # Get user info
+    user = db.execute('SELECT * FROM users WHERE id = ? AND username = ?', (user_id, username)).fetchone()
+
+    if not user:
+        flash('User doesn\'t exist', 'error')
+        return redirect('/account')
+
+    # Check Password
+    if not check_password_hash(user['hash'], password):
+        flash('Wrong Password', 'error')
+        return redirect('/account')
+    
+    # Delete from users
+    db.execute('DELETE FROM users WHERE id = ?', (user_id,))
+    db.commit()
+    db.close()
+    flash('User deleted', 'success')
+    session.clear()
+    return redirect('/')
