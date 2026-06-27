@@ -249,7 +249,7 @@ function updateTitle() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log('Title Successfully Updated');
+            // console.log('Title Successfully Updated');
         }
     })
     .catch(error => {
@@ -264,8 +264,6 @@ function handleBoardEdits(event) {
         const listId = listElement.getAttribute('data-list-id');
         let newContent = sanitizeTitle(event.target.innerText.trim(), 'Untitled List');
         event.target.innerText = newContent;
-
-        console.log('List title was clicked');
 
         fetch('/api/update_board', {
             method: 'POST',
@@ -283,9 +281,9 @@ function handleBoardEdits(event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Title successfully updated');
+                // console.log('Title successfully updated');
             } else {
-                console.error('Yeah, it\'s broke :(');
+                console.error('Failed to update title');
             }
         })
         .catch(error => {
@@ -314,9 +312,9 @@ function handleBoardEdits(event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Title successfully updated');
+                // console.log('Card successfully updated');
             } else {
-                console.error('Yeah, it\'s broke :(');
+                console.error('Failed to edit card content');
             }
         })
         .catch(error => {
