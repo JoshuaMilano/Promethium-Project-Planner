@@ -11,6 +11,8 @@ const boardTitle = document.getElementById('prm-board-title');
 const addListBtn = document.getElementById('add-list-btn');
 // List and Cards
 const listContainer = document.getElementById('prm-list-container');
+// Buttons
+const displayBoardsButton = document.getElementById('displayBoardsButton');
 
 // Listeners
 if (createBoardButton) createBoardButton.addEventListener('click', createBoard);
@@ -28,6 +30,9 @@ if (listContainer) {
     listContainer.addEventListener('keydown', boardEnterSupport);
     listContainer.addEventListener('focusout', handleBoardEdits);
 }
+// Buttons
+if (displayBoardsButton) displayBoardsButton.addEventListener('click', showBoards);
+
 // Functions for board
 
 function handleListContainerButtons(event) {
@@ -63,6 +68,9 @@ function createBoard() {
             console.error('Failed to create board')
         }
     })
+    .catch(error => {
+        console.error('Network or server error:', error)
+    });
 }
 
 function createList() {
@@ -96,6 +104,9 @@ function createList() {
         } else {
             console.error('Failed to create list');
         }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error)
     });
 }
 
@@ -129,6 +140,9 @@ function createCard(event) {
         } else {
             console.error('Card not added');
         }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error)
     });
 }
 
@@ -150,6 +164,9 @@ function deleteBoard() {
         } else {
             console.error('Yeah, that didn\'t work');
         }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error)
     });
 }
 
@@ -175,6 +192,9 @@ function deleteList(event) {
         } else {
             console.error('Couldn\'t delete list');
         }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error)
     });
 }
 
@@ -200,6 +220,9 @@ function deleteCard(event) {
         } else {
             console.error('Couldn\'t delete card');
         }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error)
     });
 }
 
@@ -228,6 +251,9 @@ function updateTitle() {
         if (data.success) {
             console.log('Title Successfully Updated');
         }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error)
     });
 }
 
@@ -261,16 +287,16 @@ function handleBoardEdits(event) {
             } else {
                 console.error('Yeah, it\'s broke :(');
             }
+        })
+        .catch(error => {
+            console.error('Network or server error:', error)
         });
     }
+
     if (event.target.classList.contains('prm-card-content')) {
         
         const cardElement = event.target.closest('.prm-card');
         const cardId = cardElement.getAttribute('data-card-id');
-        // let newContent = sanitizeTitle(event.target.innerText.trim(), 'Untitled List');
-        // event.target.innerText = newContent;
-
-        console.log('card title was clicked');
 
         fetch('/api/update_board', {
             method: 'POST',
@@ -292,6 +318,9 @@ function handleBoardEdits(event) {
             } else {
                 console.error('Yeah, it\'s broke :(');
             }
+        })
+        .catch(error => {
+            console.error('Network or server error:', error)
         });
     }
 }
@@ -312,6 +341,11 @@ function boardEnterSupport(event) {
             element.blur();
         }
     }
+}
+
+// Buttons and Forms
+function showBoards() {
+    window.location.href = '/';
 }
 
 // TODO: Remove console.logs - They exists for debug purposes ONLY.
