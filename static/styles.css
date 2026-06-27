@@ -47,19 +47,15 @@ button:hover, .button:hover {
     outline-offset: -5px;
 }
 
+.generic-button {
+    border-radius: var(--border-radius-level-FORM);
+}
+
 .text-input:hover {
     /* background-color: var(--button-hvr-colour); */
     outline: 2.5px solid #7371FC;
     outline-offset: -5px;
 }
-
-/* ==================================================
-            Text Styles
-================================================== */
-
-
-
-
 
 /* ==================================================
             Navigation Bar
@@ -84,7 +80,7 @@ button:hover, .button:hover {
 }
 
 .prm-navlinks > a {
-    color: var(--text-color);
+    color: var(--text-colour);
     font-size: 1.1rem;
     padding: .5rem 1rem;
 }
@@ -123,7 +119,7 @@ input {
 
 .form-button {
     border-radius: var(--border-radius-level-FORM);
-    aspect-ratio: 2/1;
+    aspect-ratio: 3/1;
 }
 
 /* ==================================================
@@ -269,7 +265,7 @@ input {
 .prm-delete-list-button {
     aspect-ratio: 1 / 1;
     background-color: white;
-    padding: 4;
+    padding: 4px;
     border: none;
     color: white;
     border-radius: var(--border-radius-level-one);
@@ -328,7 +324,6 @@ input {
     margin: 0;
     line-height: 1.7;
     position: relative;
-    z-index: 99;
 }
 
 
@@ -364,11 +359,73 @@ input {
     border-radius: var(--border-radius-level-one);
 }
 
-/* ==================================================
-            Temp Styles
-================================================== */
-
 #ActiveBoardTab, #ActiveBoardTab > * {
     background-color: dodgerblue;
     color: white;
+}
+
+/* ==================================================
+            Flash Styles
+================================================== */
+
+.prm-flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 100%;
+    max-width: 600px;
+    animation: slideInOut 4s forwards;
+}
+
+.prm-alert {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius-level-FORM);
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    border: 2px solid transparent;
+}
+
+.prm-alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-color: #badbcc;
+}
+
+.prm-alert-error {
+    background-color: #f8d7da;
+    color: #842029;
+    border-color: #f5c2c7;
+}
+
+/* ==================================================
+            Block mobile users
+================================================== */
+
+.mobile-blocker {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-blocker > h3 {
+    font-weight: bold;
+}
+
+/* ==================================================
+            Animations
+================================================== */
+
+@keyframes slideInOut {
+    0% { transform: translate(-50%, -100%); opacity: 0; }
+    10% { transform: translate(-50%, 0); opacity: 1; }
+    90% { transform: translate(-50%, 0); opacity: 1; }
+    100% { transform: translate(-50%, -100%); opacity: 0; }
 }
