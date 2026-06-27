@@ -18,7 +18,7 @@
 ## How to actually run **Promethium Project Planner**
 Writing native installation instructions that account for Python environments on both Windows and macOS is difficult, especially since this application was developed natively on **Arch Linux** using **WSL2**.
 
-To bypass the "it only works on my machine" problem, I leveraged the exact same tools I use to provide preconfigured development environments for my business: **GitHub Codespaces** and **Docker**.
+To bypass the "it only works on my machine" problem, I utilised the exact same tools I use to provide preconfigured development environments for my business: **GitHub Codespaces** and **Docker**.
 
 By containerizing the environment, Promethium is incredibly easy to spin up on any machine, directly in the browser. **NOTE: DATABASE STORAGE IS TEMPORARY!**
 
