@@ -4,15 +4,9 @@
         <div class="prm-form-container">
             <h1>Register</h1>
             <form class="prm-form" action="/register" method="post">
-                <div class="mb-3">
-                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
-                </div>
-                <div class="mb-3">
-                    <input autocomplete="off" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
-                </div>
-                <div class="mb-3">
-                    <input autocomplete="off" class="form-control mx-auto w-auto" name="password-confirmation" placeholder="Confirm password" type="password">
-                </div>
+                <input autocomplete="off" autofocus name="username" placeholder="Username" type="text" required>
+                <input autocomplete="off" name="password" placeholder="Password" type="password" required>
+                <input autocomplete="off" name="password-confirmation" placeholder="Confirm password" type="password" required>
                 <button class="button form-button" type="submit">Register</button>
             </form>
         </div>

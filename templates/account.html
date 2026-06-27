@@ -2,28 +2,30 @@
 {% block body %}
     <main class="prm-form-page-container">
         <div class="prm-form-container">
-            <h1>Login</h1>
-            <form class="prm-form" action="/login" method="post">
-                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
-                <input autocomplete="off" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
-                <button class="button form-button" type="submit">Login</button>
+            <h1>Change Username</h1>
+            <form class="prm-form" action="/api/change_username" method="POST">
+                <input autocomplete="off" name="old_username" placeholder="Old Username" type="text" required>
+                <input autocomplete="off" name="new_username" placeholder="New Username" type="text" required>
+                <input autocomplete="off" name="password" placeholder="Password" type="password">
+                <button class="button form-button" type="submit">Change Username</button>
             </form>
         </div>
         <div class="prm-form-container">
-            <h1>Login</h1>
-            <form class="prm-form" action="/login" method="post">
-                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
-                <input autocomplete="off" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
-                <button class="button form-button" type="submit">Login</button>
+            <h1>Change Password</h1>
+            <form class="prm-form" action="/api/change_password" method="POST">
+                <input autocomplete="off" name="old_password" placeholder="Old Password" type="password" required>
+                <input autocomplete="off" name="new_password" placeholder="New Password" type="password" required>
+                <button class="button form-button" type="submit">Change Password</button>
             </form>
         </div>
         <div class="prm-form-container">
             <h1>Delete Account</h1>
-            <form class="prm-form" action="/login" method="post">
-                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
-                <input autocomplete="off" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
-                <button class="button form-button" type="submit">Login</button>
+            <form class="prm-form" action="/api/delete_account" method="POST">
+                <input autocomplete="off" name="username" placeholder="Username" type="text" required>
+                <input autocomplete="off" name="password" placeholder="Password" type="password" required>
+                <button style="background-color: #fd4e62;" class="button form-button" type="submit">Delete Account</button>
             </form>
         </div>
+        <button class="generic-button" id="displayBoardsButton">Go Back</button>
     </main>
 {% endblock %}
