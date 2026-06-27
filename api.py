@@ -202,3 +202,5 @@ def api_update_board():
     db.close()
 
     return jsonify({'success': True})
+
+# Account changes

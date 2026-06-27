@@ -159,5 +159,12 @@ def view_board(board_id):
     db.close()
     return render_template('board.html', users_boards=users_boards, active_board=active_board, board_lists=lists, board_cards=cards)
 
+# Account page
+@app.route('/account')
+@login_required
+def account():
+    return redirect('/')
+    # return render_template('account.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

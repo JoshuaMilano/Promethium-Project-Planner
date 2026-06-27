@@ -1,15 +1,13 @@
 {% extends "layout.html" %}
 {% block body %}
-    <main class="container py-5 text-center">
-        <h1>Login</h1>
-        <form action="/login" method="post">
-            <div class="mb-3">
+    <main class="prm-form-page-container">
+        <div class="prm-form-container">
+            <h1>Login</h1>
+            <form class="prm-form" action="/login" method="post">
                 <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
-            </div>
-            <div class="mb-3">
                 <input autocomplete="off" class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
-            </div>
-            <button class="btn btn-primary" type="submit">Login</button>
-        </form>
+                <button class="button form-button" type="submit">Login</button>
+            </form>
+        </div>
     </main>
 {% endblock %}

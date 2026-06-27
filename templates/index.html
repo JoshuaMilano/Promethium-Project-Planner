@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% block body %}
-    <main class="container py-5 text-center">
-        <div class="prm-boards-container">
-            <div class="prm-boards-list">
-                {% for board in users_boards %}
-                    <a class="prm-button" href="/board/{{ board.id }}">{{ board.title }}</a>
-                {% endfor %}
-                <button class="prm-button" id="prm-create-board-button">Create new board</button>
-            </div>
-            <div class="prm-board"></div>
+    <main class="prm-page-container">
+        <div class="prm-boards-list">
+            {% for board in users_boards %}
+                <div class="prm-boards-list-item">
+                    <a class="button prm-board-link" href="/board/{{ board.id }}">{{ board.title }}</a>
+                </div>
+            {% endfor %}
+            <button id="prm-create-board-button">Create new board</button>
         </div>
+        <div class="prm-board"></div>
     </main>
 {% endblock %}

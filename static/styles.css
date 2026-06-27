@@ -1,24 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 :root {
-    --text-color: #212529;
-    --text-highlight-color: #414952;
+    --primary-colour: #F8B4D3;
+    --text-colour: #0b0307;
+    --button-std-colour: white;
+    --button-hvr-colour: #c7c7c7;
+
+        /* Border Radius Styles */
+    --border-radius-level-one: 24px;
+    --border-radius-level-two: calc(var(--border-radius-level-one) + 8px);
+    --border-radius-level-three: calc(var(--border-radius-level-two) + 8px);
+    --border-radius-level-FORM: 8px;
 }
 
 * {
-    text-decoration: none !important;
+    box-sizing: border-box;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-colour);
 }
+
+*:focus {
+    outline: 2.5px solid #7371FC;
+    outline-offset: -5px;
+}
+
+body {
+    height: 100vh;
+    background-color: var(--primary-colour);
+}
+
+button, .button {
+    padding: .5rem;
+    min-height: 3rem;
+    min-width: 3rem;
+    border: none;
+    /* Colours */
+    background-color: var(--button-std-colour);
+}
+
+button:hover, .button:hover {
+    /* background-color: var(--button-hvr-colour); */
+    outline: 2.5px solid #7371FC;
+    outline-offset: -5px;
+}
+
+.text-input:hover {
+    /* background-color: var(--button-hvr-colour); */
+    outline: 2.5px solid #7371FC;
+    outline-offset: -5px;
+}
+
+/* ==================================================
+            Text Styles
+================================================== */
+
+
+
+
+
+/* ==================================================
+            Navigation Bar
+================================================== */
 
 .prm-navbar {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 2rem;
     padding: 1rem;
     justify-content: space-around;
+    margin-bottom: 8px;
 }
 
 .prm-brand > a {
     font-size: 2rem;
-    color: var(--text-color) !important;
 }
 
 .prm-navlinks {
@@ -27,201 +84,291 @@
 }
 
 .prm-navlinks > a {
-    text-decoration: none;
     color: var(--text-color);
     font-size: 1.1rem;
     padding: .5rem 1rem;
 }
 
-.prm-navlinks > a:hover {
-    color: var(--text-highlight-color);
+/* ==================================================
+            Forms (Login, Register, Account)
+================================================== */
+
+input {
+    padding: 8px;
+    border: 0;
+    border-radius: var(--border-radius-level-FORM);
 }
 
-.prm-boards-container {
-    display: grid;
-    grid-template-columns: 7.5rem auto;
+.prm-form-page-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
 }
 
-.prm-boards-list {
+.prm-form-container {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    align-items: center;
+    gap: 8px
 }
 
-.prm-button {
-    display: block;
-    padding: .25rem;
-    background-color: #E9E9ED;
-    border: none;
-    border-radius: .25rem;
+.prm-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
-.prm-button:hover {
-    background-color: #d0d0d7;
+.form-button {
+    border-radius: var(--border-radius-level-FORM);
+    aspect-ratio: 2/1;
 }
 
-.prm-boards-container {
-    padding: .5rem;
-    border: 1px solid black;
+/* ==================================================
+            Page Container
+================================================== */
+
+.prm-page-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(80vh + 3px);
+    overflow: hidden;
+    /* This controls the side padding */
+    padding: 0px 128px;
+    width: 100%;
+    gap: 8px;
 }
 
-#ActiveBoardTab, #ActiveBoardTab > * {
-    background-color: dodgerblue;
-    color: white;
+/* ==================================================
+            Board List
+================================================== */
+
+.prm-boards-list {
+    width: 200px;
+    margin-top: 3px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    overflow-y: auto;
 }
+
+.prm-boards-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.prm-boards-list-item > * {
+    border-radius: var(--border-radius-level-three);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prm-boards-list-item > button {
+    aspect-ratio: 1/1;
+    flex-shrink: 0;
+}
+
+.prm-boards-list-item > a {
+    flex: 5;
+    padding: .75rem;
+}
+
+#prm-create-board-button {
+    border-radius: var(--border-radius-level-three);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+/* ==================================================
+            Board
+================================================== */
+
+.prm-board {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+#prm-board-title {
+    background-color: white;
+    padding: 16px;
+    border-radius: var(--border-radius-level-three);
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================================================
+            Lists
+================================================== */
 
 #prm-list-container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: .5rem;
-    gap: .5rem;
-    overflow-x: auto;
+    background-color: white;
+    border-radius: var(--border-radius-level-three);
     flex-grow: 1;
+    min-height: 0;
+    padding: 8px;
+    gap: 8px;
+    overflow-x: auto;
 }
 
 .prm-list {
-    min-width: 15rem;
+    min-width: 10rem;
+    width: max-content; 
+    flex-shrink: 0;
     padding: .5rem;
-    border: black solid 1px;
-    position: relative;
+    background-color: var(--primary-colour);
+    border-radius: var(--border-radius-level-two);
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+}
+
+.prm-list > * {
+    border-radius: var(--border-radius-level-one) !important;
+}
+
+.prm-list-title {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+    height: 3rem;
+}
+
+.prm-list-title-text {
+    padding: .25rem 1rem;
+    background-color: white;
+    border-radius: var(--border-radius-level-one);
+    margin: 0;
+    min-width: 10rem;
+    flex-grow: 1;
+    white-space: nowrap;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .prm-delete-list-button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    aspect-ratio: 1/1;
-    border-radius: 100%;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    margin: .5rem;
+    aspect-ratio: 1 / 1;
+    background-color: white;
+    padding: 4;
     border: none;
-    background-color: #ef2f45;
     color: white;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.prm-delete-card-button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    aspect-ratio: 1/1;
-    border-radius: 100%;
+    border-radius: var(--border-radius-level-one);
+    z-index: 99;
     display: flex;
-    align-content: center;
+    align-items: center;
     justify-content: center;
-    margin: .25rem;
-    border: none;
+}
+
+.prm-delete-list-button:hover {
     background-color: #ef2f45;
+}
+
+.prm-delete-list-button svg {
+    min-width: 2rem;
+    height: 2rem;
+}
+
+.prm-add-list-button {
+    min-width: 240px;
+    height: 80px;
+    border-radius: var(--border-radius-level-two);
+    background-color: var(--primary-colour);
     color: white;
-    opacity: 0;
-    visibility: hidden;
-    z-index: 0;
+    font-size: 1.5rem;
 }
 
-.prm-list:hover .prm-delete-list-button {
-    animation: delete-list-fadeIn 0.3s ease-out forwards
-}
-
-.prm-card:hover .prm-delete-card-button {
-    animation: delete-card-slideOut 0.3s ease-out forwards
-}
-
-.prm-add-list-btn {
-    min-width: 15rem;
-}
-
-.prm-board {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
+/* ==================================================
+            Cards
+================================================== */
 
 .prm-card-container {
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .prm-card {
-    padding: .5rem;
-    border: black solid 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+.prm-card-content {
+    border-radius: var(--border-radius-level-one);
+    padding: 8px;
     word-break: break-all;
     position: relative;
     z-index: 99;
-}
-
-.prm-card > p {
+    background: white;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    min-height: 64px;
     margin: 0;
-}
-
-.prm-boards-list {
-    padding-right: .5rem;
-    border-right: 1px solid black; 
-}
-
-.board-list-item {
-    position: relative;
-}
-
-.prm-board-link {
+    line-height: 1.7;
     position: relative;
     z-index: 99;
 }
 
-#delete-board-button {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
+
+.prm-delete-card-button {
     border: none;
-    border-radius: 100rem;
-    aspect-ratio: 1/1;
     background-color: #ef2f45;
     color: white;
-
-    animation: delete-board-slideOut 0.5s ease-out forwards
+    border-radius: var(--border-radius-level-one);
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    padding-top: 0;
+    margin-top: -3rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
 }
 
-/* ANIMATIONS */
-
-@keyframes delete-board-slideOut {
-    20% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-3rem);
-    }
+.prm-card:hover .prm-delete-card-button {
+    padding-bottom: calc(.5rem + 32px);
 }
 
-@keyframes delete-list-fadeIn {
-    0% {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    100% {
-        opacity: 1;
-        visibility: visible;
-    }
+.prm-card:hover .prm-delete-card-button:hover {
+    border-radius: 0px 0px var(--border-radius-level-one) var(--border-radius-level-one);
+    padding-top: calc(.5rem + 22px);
+    margin-top: -22px;
+    padding-bottom: .5rem; /* This will now successfully override the 40px! */
 }
 
-@keyframes delete-card-slideOut {
-    0% {
-        opacity: 0;
-        visibility: hidden;
-    }
+.prm-add-card-button {
+    border-radius: var(--border-radius-level-one);
+}
 
-    100% {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-1.25rem);
-    }
+/* ==================================================
+            Temp Styles
+================================================== */
+
+#ActiveBoardTab, #ActiveBoardTab > * {
+    background-color: dodgerblue;
+    color: white;
 }

@@ -32,7 +32,7 @@ if (listContainer) {
 
 function handleListContainerButtons(event) {
     // Handle Create Card Buttons
-    if (event.target.closest('.add-card-button')) {
+    if (event.target.closest('.prm-add-card-button')) {
         createCard(event);
     }
 
@@ -82,10 +82,12 @@ function createList() {
 
             const newListHTML = `
                 <div class="prm-list" data-list-id="${newListId}">
-                    <h2 class="prm-list-title" spellcheck="false" contenteditable="true">New List</h2>
-                    <button class="prm-delete-list-button"><i data-lucide="x"></i></button>
+                    <div class="prm-list-title">
+                        <h2 class="prm-list-title-text" spellcheck="false" contenteditable="true">New List</h2>
+                        <button class="prm-delete-list-button"><i data-lucide="x"></i></button>
+                    </div>
                     <div class="prm-card-container">
-                        <button class="prm-button add-card-button">Add Card</button>
+                        <button class="prm-add-card-button">Add Card</button>
                     </div>
                 </div>
             `;
@@ -230,7 +232,7 @@ function updateTitle() {
 }
 
 function handleBoardEdits(event) {
-    if (event.target.classList.contains('prm-list-title')) {
+    if (event.target.classList.contains('prm-list-title-text')) {
         
         const listElement = event.target.closest('.prm-list');
         const listId = listElement.getAttribute('data-list-id');
@@ -304,7 +306,7 @@ function boardTitleEnterSupport(event) {
 
 function boardEnterSupport(event) {
     const element = event.target;
-    if (element.classList.contains('prm-list-title') || element.classList.contains('prm-card-content')) {
+    if (element.classList.contains('prm-list-title-text') || element.classList.contains('prm-card-content')) {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             element.blur();
