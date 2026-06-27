@@ -9,7 +9,18 @@
             "extensions": [
                 "ms-python.python",
                 "tamasfe.even-better-toml"
-            ]
+            ],
+            "settings": {
+                "files.exclude": {
+                    "**/.git": true,
+                    "**/.svn": true,
+                    "**/.hg": true,
+                    "**/.DS_Store": true,
+                    "**/Thumbs.db": true,
+                    ".env.example": true,
+                    "requirements.txt": true
+                }
+            }
         }
     },
     "postCreateCommand": "sqlite3 promethium.db < schema.sql"
