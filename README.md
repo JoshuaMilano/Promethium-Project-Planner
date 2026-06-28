@@ -24,6 +24,38 @@ For the Database, I went with `SQLite3` because it's serverless, requires almost
 
 The database schema is also structured to support drag-and-drop functionality and custom background colours, which I'll dive deeper into next.
 
+### Side notes, Reflection, and Analysing the architecture of **Promethium Project Planner**
+So, when building Promethium Project Planner, I had several goals in mind: Boards, Lists, and Cards with drag/drop functionality and support for changing their background colours; this is why the database technically supports drag/drop functionality and stores the default background colour of white.
+
+My other goals were a fully functional account system, **SPA**-*like* behaviour, and an alliterative name, which is how I landed on the name **Promethium Project Planner**, and also why I chose the soft pink and white theme. Choosing that aesthetic is also ultimately why I scrapped the ability to add background colours.
+
+As for the account system, the *user* can create an account, change their account username, change their password, and completely delete their account, with each one of these actions prompting a **notification**.
+
+To jump back to what I was saying about the backend earlier, this is why writing my own database helper was so important. Because I *know* my helper function enables **foreign keys**, and my database makes use of `ON DELETE CASCADE`, I can safely delete users, boards, lists *and* cards without ever having to worry about orphans in the database.
+
+Something else I'd like to note is the use of `jsonify`. Using tons of different routes just didn't feel right to me, and constantly reloading the page just to add and modify Kanban content was bad UX. To fix this, I decided to use Flask's `jsonify` throughout the application to dynamically generate, edit, and delete components. It communicates with the database in the background without breaking the user's flow.
+
+## Every uploaded file, and what it does.
+ - `.env.example` - **Promethium** uses a SECRET_KEY, which is stored in a .env file. The actual file has not been uploaded to github.
+ - `requirements.txt` - These are the python requirements to run **Promethium**.
+ - `Dockerfile` - This creates the environment, installs the requirements, exposes `port 5000`.
+ - `devcontainer.json` - This tells github how to set up the codespace, and forwards `port 5000` to the browser. It also hides certain files within the codespace, and creates the database from `schema.sql`.
+ - `schema.sql` - This is the schema used to create **Promethium's** SQLite3 database.
+ - `helpers.py` - This contains the **database** and **loggin_required** python helpers.
+ - `app.py` - This handles behaviour related to routes, such as boards, accounts, etc. This runs the app.
+ - `api.py` - This handles behaviour unrelated to routes, such as creating boards, cards, updating user info, and more. This communicates with the Javascript.
+ - `.gitignore` - Stops certains files from uploading the Github.
+ - `helpers.js` - Contains helper functions for `scripts.js`. It currently contains a single function, but exists to accomodate for potential future development.
+ - `scripts.js` - Communicates with `api.py` to create boards, lists, cards, and handle board updates and app behaviour.
+ - `styles.css` - Contains all the styles for **Promethium Project Planner**.
+ - `layout.html` - Base layout for the app.
+ - `login.html` - Login page.
+ - `register.html` - Registration page.
+ - `index.html` - Main page that doesn't display boards, but has a logged-in user.
+ - `board.html` - `app.py` uses this to generate the users board based on the database information.
+ - `account.html` - Contains options to change the username, password, and delete the account.
+ - `mobile.html` - Basic fullscreen page asking to user to switch to desktop.
+
 ## How to actually run **Promethium Project Planner**
 Writing native installation instructions that account for Python environments on both Windows and macOS is difficult, especially since this application was developed natively on **Arch Linux** using **WSL2**.
 
