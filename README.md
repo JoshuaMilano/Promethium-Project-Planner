@@ -1,19 +1,12 @@
-# What is **Promethium**?
-**Promethium** is just a simple Trello clone. I needed to make a final project for **CS50x**, and this is what I settled on.
+# Promethium Project Planner
+#### Video Demo:  <URL HERE>
 
-# What technologies does **Promethium** use?
-## Frontend
- - **HTML**
- - **CSS**
- - **Jinja**
- - **Lucide Icons**
+# What is **Promethium Project Planner**
+**Promethium** started out as a simple Trello clone. I needed to make a final project for **CS50x**, and I figured I might as well build a tool I could actually use in my day-to-day life to keep my projects organized.
 
-## Backend
- - **Python**
- - **Flask**
+To use Promethium, you need to create an account and access it from a desktop browser. If you try loading it on a phone, you'll hit a redirect asking you to switch devices. This is because Kanban boards don't really display well on mobile devices.
 
-## Database
- - **SQLite**
+Once an account has been created, you can create boards, lists, and cards to track information, tasks, and jobs. All of this information is stored in a **SQLite3** database, allowing you to sign in, work, sign out, and when you're ready, sign back in again, and pick up where you left off.
 
 ## How to actually run **Promethium Project Planner**
 Writing native installation instructions that account for Python environments on both Windows and macOS is difficult, especially since this application was developed natively on **Arch Linux** using **WSL2**.
