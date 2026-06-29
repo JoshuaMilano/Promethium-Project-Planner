@@ -1,5 +1,4 @@
 # Promethium Project Planner
-#### Video Demo:  <URL HERE>
 
 ## What is **Promethium Project Planner**
 The idea of **Promethium** started out as a simple Trello clone. I needed to make a final project for **CS50x**, and I figured I might as well build a tool I could actually use in my day-to-day life to keep my projects organized.
